@@ -12,6 +12,17 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 
 export default function Index({ users }) {
     console.log("check users :", users);
@@ -60,23 +71,47 @@ export default function Index({ users }) {
                                         </Button>
                                     </Link>
 
-                                    <Button
-                                        variant="destructive"
-                                        size="sm"
-                                        onClick={() => {
-                                            if (
-                                                confirm(
-                                                    "Are you sure you want to delete this user?",
-                                                )
-                                            ) {
-                                                router.delete(
-                                                    `/users/delete/${user.id}`,
-                                                );
-                                            }
-                                        }}
-                                    >
-                                        Delete
-                                    </Button>
+                                   <AlertDialog>
+                                        <AlertDialogTrigger asChild>
+                                            <Button
+                                                variant="destructive"
+                                                size="sm"
+                                            >
+                                                Delete
+                                            </Button>
+                                        </AlertDialogTrigger>
+
+                                        <AlertDialogContent>
+                                            <AlertDialogHeader>
+                                                <AlertDialogTitle>
+                                                    Delete User
+                                                </AlertDialogTitle>
+
+                                                <AlertDialogDescription>
+                                                    This action cannot be undone.
+                                                    User{" "}
+                                                    <span className="font-semibold text-red-500">
+                                                        {user.name}
+                                                    </span>{" "}
+                                                    will be permanently deleted.
+                                                </AlertDialogDescription>
+                                            </AlertDialogHeader>
+
+                                            <AlertDialogFooter>
+                                                <AlertDialogCancel>
+                                                    Cancel
+                                                </AlertDialogCancel>
+
+                                                <AlertDialogAction
+                                                    onClick={() => {
+                                                        router.delete(`/users/delete/${user.id}`,)
+                                                    }}
+                                                >
+                                                    Yes, Delete
+                                                </AlertDialogAction>
+                                            </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                    </AlertDialog>
                                 </TableCell>
                             </TableRow>
                         ))}
@@ -86,3 +121,4 @@ export default function Index({ users }) {
         </div>
     );
 }
+
