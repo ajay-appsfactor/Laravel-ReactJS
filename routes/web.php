@@ -28,7 +28,7 @@ Route::middleware('auth')->group(function () {
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::get('/users', [UserController::class, 'index']);  //Read All  Users
+Route::get('/users', [UserController::class, 'index'])->name('users.index');  //Read All  Users
 Route::post('/users', [UserController::class, 'store']);  //Create User
 Route::put('/users/{id}/update',[UserController::class,'update'])->name('users.update');  //Update User
 Route::delete('/users/delete/{id}',[UserController::class, 'destroy'] ); //Delete User

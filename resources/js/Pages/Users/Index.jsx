@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, router } from "@inertiajs/react";
-
+import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import {
@@ -18,9 +18,14 @@ export default function Index({ users }) {
             <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold">Users</h2>
 
-                <Link href={route('users.create')}>
-                    <Button>Create User</Button>
-                </Link>
+                <div className="flex items-center space-x-8">
+                    <Link href={route("users.create")}>
+                        <Button>Create User</Button>
+                    </Link>
+                    <Button onClick={() => window.history.back()}>
+                        <ArrowLeft size={16} /> Back
+                    </Button>
+                </div>
             </div>
 
             <div className="border rounded-lg">

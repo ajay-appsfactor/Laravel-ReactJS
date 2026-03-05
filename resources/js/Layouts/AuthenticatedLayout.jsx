@@ -5,6 +5,7 @@ import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
 import { Link, usePage } from "@inertiajs/react";
 import { useState } from "react";
 import { Toaster } from "@/components/ui/sonner";
+import Navbar from "@/Pages/Navbar";
 
 export default function AuthenticatedLayout({ header, children }) {
     const user = usePage().props.auth.user;
@@ -30,6 +31,9 @@ export default function AuthenticatedLayout({ header, children }) {
                                     active={route().current("dashboard")}
                                 >
                                     Dashboard
+                                </NavLink>
+                                <NavLink href={route("users.index")}>
+                                    Users
                                 </NavLink>
                             </div>
                         </div>
@@ -170,6 +174,7 @@ export default function AuthenticatedLayout({ header, children }) {
                     </div>
                 </header>
             )}
+            {/* <Navbar /> */}
 
             <Toaster position="top-right" richColors />
             <main>{children}</main>
