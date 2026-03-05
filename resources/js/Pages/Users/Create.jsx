@@ -1,6 +1,6 @@
 import React from "react";
-import {  usePage, useForm } from "@inertiajs/react";
-import { Loader } from 'lucide-react';
+import {  usePage, useForm, Link } from "@inertiajs/react";
+import { Loader , ArrowLeft} from 'lucide-react';
 import { toast } from "sonner";
 import {
     Field,
@@ -52,8 +52,20 @@ export default function Create() {
     // };
 
     return (
-        <div className="flex justify-center p-6">
-            <div className="w-full max-w-lg">
+        <div className=" p-6">
+                <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold">Create User</h2>
+
+                <div className="flex items-center space-x-8">
+                    <Link href={route("users.create")}>
+                        <Button>Create User</Button>
+                    </Link>
+                    <Button onClick={() => window.history.back()}>
+                        <ArrowLeft size={16} /> Back
+                    </Button>
+                </div>
+            </div>
+            <div className="w-full max-w-lg mx-auto">
                 <FieldSet>
                     <FieldTitle>Create User</FieldTitle>
 
