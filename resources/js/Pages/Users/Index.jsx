@@ -2,6 +2,7 @@ import React from "react";
 import { Link, router } from "@inertiajs/react";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { format } from "date-fns";
 import { toast } from "sonner";
 import {
     Table,
@@ -13,6 +14,7 @@ import {
 } from "@/components/ui/table";
 
 export default function Index({ users }) {
+    console.log("check users :", users);
     return (
         <div className="p-6">
             <div className="flex justify-between items-center mb-6">
@@ -35,6 +37,8 @@ export default function Index({ users }) {
                             <TableHead>ID</TableHead>
                             <TableHead>Name</TableHead>
                             <TableHead>Email</TableHead>
+                            <TableHead>Created At</TableHead>
+                            <TableHead>Updated At</TableHead>
                             <TableHead className="text-right">Action</TableHead>
                         </TableRow>
                     </TableHeader>
@@ -47,7 +51,8 @@ export default function Index({ users }) {
                                     {user.name}
                                 </TableCell>
                                 <TableCell>{user.email}</TableCell>
-
+                                <TableCell>{format(new Date(user.created_at), "dd MMM yyyy, hh:mm a")}</TableCell>
+                                <TableCell>{format(new Date(user.updated_at), "dd MMM yyyy, hh:mm a")}</TableCell>
                                 <TableCell className="text-right space-x-2">
                                     <Link href={`/users/${user.id}/edit`}>
                                         <Button variant="outline" size="sm">

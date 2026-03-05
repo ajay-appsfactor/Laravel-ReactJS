@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { router, usePage } from "@inertiajs/react";
+import React from "react";
+import {  usePage, useForm } from "@inertiajs/react";
+import { Loader } from 'lucide-react';
 import { toast } from "sonner";
 import {
     Field,
@@ -18,7 +19,13 @@ import { Button } from "@/components/ui/button";
 export default function Create() {
     const { errors } = usePage().props;
 
-    const [form, setForm] = useState({
+    // const [form, setForm] = useState({
+    //     name: "",
+    //     email: "",
+    //     password: "",
+    // });
+
+    const { data, setData, post, processing, reset } = useForm({
         name: "",
         email: "",
         password: "",
@@ -27,9 +34,10 @@ export default function Create() {
     const submit = (e) => {
         e.preventDefault();
 
-        router.post("/users", form, {
+        post("/users", {
             onSuccess: () => {
                 toast.success("User created successfully.");
+                reset();
             },
             onError: () => {
                 toast.error("Failed to create user.");
@@ -64,11 +72,9 @@ export default function Create() {
                                     <Input
                                         placeholder="Enter user name"
                                         onChange={(e) =>
-                                            setForm({
-                                                ...form,
-                                                name: e.target.value,
-                                            })
+                                            setData("name", e.target.value)
                                         }
+                                        value={data.name}
                                     />
                                 </FieldContent>
                                 {errors.name && (
@@ -86,11 +92,9 @@ export default function Create() {
                                         type="email"
                                         placeholder="Enter email"
                                         onChange={(e) =>
-                                            setForm({
-                                                ...form,
-                                                email: e.target.value,
-                                            })
+                                            setData("email", e.target.value)
                                         }
+                                        value={data.email}
                                     />
                                 </FieldContent>
 
@@ -109,11 +113,9 @@ export default function Create() {
                                         type="password"
                                         placeholder="Enter password"
                                         onChange={(e) =>
-                                            setForm({
-                                                ...form,
-                                                password: e.target.value,
-                                            })
+                                            setData("password", e.target.value)
                                         }
+                                        value={data.password}
                                     />
                                 </FieldContent>
 
@@ -128,7 +130,16 @@ export default function Create() {
                         </FieldGroup>
 
                         <div className="mt-6">
-                            <Button type="submit">Save User</Button>
+                            <Button
+                                type="submit"
+                                disabled={processing}
+                                className="flex items-center gap-2"
+                            >
+                                {processing && (
+                                    <span className="animate-spin"><Loader /></span>
+                                )}
+                                {processing ? "Saving..." : "Save User"}
+                            </Button>
                         </div>
                     </form>
                 </FieldSet>
