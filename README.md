@@ -10,3 +10,13 @@ php artisan config:cache
 php artisan session:table
 php artisan make:controller UserController --resource
 php artisan route:list
+
+
+
+# Model is create 
+php artisan make:model Employee -m
+
+# Schema Define
+php artisan migrate
+
+# Employee.php

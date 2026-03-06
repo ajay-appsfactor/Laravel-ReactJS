@@ -1,138 +1,165 @@
-import InputError from "@/Components/InputError";
-import InputLabel from "@/Components/InputLabel";
-import PrimaryButton from "@/Components/PrimaryButton";
-import TextInput from "@/Components/TextInput";
-import GuestLayout from "@/Layouts/GuestLayout";
-import { Head, Link, useForm } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-export default function Register() {
-    const { data, setData, post, processing, errors, reset } = useForm({
-        name: "",
-        email: "",
-        phone: "",
-        password: "",
-        password_confirmation: "",
+const registerSchema = z
+    .object({
+        name: z
+            .string()
+            .trim()
+            .min(1, "Name is required")
+            .min(3, "Name must be at least 3 characters"),
+        email: z
+            .string()
+            .trim()
+            .min(1, "Email is required")
+            .toLowerCase()
+            .pipe(z.email({ error: "Invalid email address" })),
+        phone: z
+            .string()
+            .trim()
+            .min(1, "Phone is required")
+            .regex(/^[0-9]{10}$/, "Phone must be 10 digits"),
+        password: z.string().min(1, "Password is required").min(6, "Password must be at least 6 characters"),
+        password_confirmation: z.string(),
+    })
+    .refine((data) => data.password === data.password_confirmation, {
+        message: "Passwords do not match",
+        path: ["password_confirmation"],
     });
 
-    const submit = (e) => {
-        e.preventDefault();
-        console.log(data)
+export default function Register() {
+    const {
+        register,
+        handleSubmit,
+        formState: { errors, isSubmitting },
+    } = useForm({
+        resolver: zodResolver(registerSchema),
+    });
 
-        post(route("register"), {
-            onFinish: () => reset("password", "password_confirmation"),
-        });
+    const submit = (data) => {
+        console.log(data);
+
+        router.post(route("register"), data);
     };
 
     return (
-        <GuestLayout>
+        <div className="uk-container mt-5" style={{ maxWidth: "500px" }}>
             <Head title="Register" />
 
-            <form onSubmit={submit}>
-                <div>
-                    <InputLabel htmlFor="name" value="Name" />
+            <h2 className="uk-text-large">Register</h2>
 
-                    <TextInput
-                        id="name"
-                        name="name"
-                        value={data.name}
-                        className="mt-1 block w-full"
-                        autoComplete="name"
-                        isFocused={true}
-                        onChange={(e) => setData("name", e.target.value)}
-                        required
-                    />
+            <form onSubmit={handleSubmit(submit)} className="uk-form-stacked">
+                {/* Name */}
+                <div className="uk-margin">
+                    <label className="uk-form-label">Name</label>
 
-                    <InputError message={errors.name} className="mt-2" />
+                    <div className="uk-form-controls">
+                        <input
+                            className="uk-input"
+                            type="text"
+                            {...register("name")}
+                        />
+                    </div>
+
+                    {errors.name && (
+                        <p className="uk-text-danger uk-text-small">
+                            {errors.name.message}
+                        </p>
+                    )}
                 </div>
 
-                <div className="mt-4">
-                    <InputLabel htmlFor="email" value="Email" />
+                {/* Email */}
+                <div className="uk-margin">
+                    <label className="uk-form-label">Email</label>
 
-                    <TextInput
-                        id="email"
-                        type="email"
-                        name="email"
-                        value={data.email}
-                        className="mt-1 block w-full"
-                        autoComplete="username"
-                        onChange={(e) => setData("email", e.target.value)}
-                        required
-                    />
+                    <div className="uk-form-controls">
+                        <input
+                            className="uk-input"
+                            type="email"
+                            {...register("email")}
+                        />
+                    </div>
 
-                    <InputError message={errors.email} className="mt-2" />
+                    {errors.email && (
+                        <p className="uk-text-danger uk-text-small">
+                            {errors.email.message}
+                        </p>
+                    )}
                 </div>
+
                 {/* Phone */}
-                <div className="mt-4">
-                    <InputLabel htmlFor="phone" value="Phone" />
+                <div className="uk-margin">
+                    <label className="uk-form-label">Phone</label>
 
-                    <TextInput
-                        id="phone"
-                        name="phone"
-                        value={data.phone}
-                        className="mt-1 block w-full"
-                        autoComplete="phone"
-                        onChange={(e) => setData("phone", e.target.value)}
-                        required
-                    />
+                    <div className="uk-form-controls">
+                        <input
+                            className="uk-input"
+                            type="text"
+                            {...register("phone")}
+                        />
+                    </div>
 
-                    <InputError message={errors.phone} className="mt-2" />
+                    {errors.phone && (
+                        <p className="uk-text-danger uk-text-small">
+                            {errors.phone.message}
+                        </p>
+                    )}
                 </div>
 
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                {/* Password */}
+                <div className="uk-margin">
+                    <label className="uk-form-label">Password</label>
 
-                    <TextInput
-                        id="password"
-                        type="password"
-                        name="password"
-                        value={data.password}
-                        className="mt-1 block w-full"
-                        autoComplete="new-password"
-                        onChange={(e) => setData("password", e.target.value)}
-                        required
-                    />
+                    <div className="uk-form-controls">
+                        <input
+                            className="uk-input"
+                            type="password"
+                            {...register("password")}
+                        />
+                    </div>
 
-                    <InputError message={errors.password} className="mt-2" />
+                    {errors.password && (
+                        <p className="uk-text-danger uk-text-small">
+                            {errors.password.message}
+                        </p>
+                    )}
                 </div>
 
-                <div className="mt-4">
-                    <InputLabel
-                        htmlFor="password_confirmation"
-                        value="Confirm Password"
-                    />
+                {/* Confirm Password */}
+                <div className="uk-margin">
+                    <label className="uk-form-label">Confirm Password</label>
 
-                    <TextInput
-                        id="password_confirmation"
-                        type="password"
-                        name="password_confirmation"
-                        value={data.password_confirmation}
-                        className="mt-1 block w-full"
-                        autoComplete="new-password"
-                        onChange={(e) =>
-                            setData("password_confirmation", e.target.value)
-                        }
-                        required
-                    />
+                    <div className="uk-form-controls">
+                        <input
+                            className="uk-input"
+                            type="password"
+                            {...register("password_confirmation")}
+                        />
+                    </div>
 
-                    <InputError
-                        message={errors.password_confirmation}
-                        className="mt-2"
-                    />
+                    {errors.password_confirmation && (
+                        <p className="uk-text-danger uk-text-small">
+                            {errors.password_confirmation.message}
+                        </p>
+                    )}
                 </div>
 
-                <div className="mt-4 flex items-center justify-end">
-                    <Link
-                        href={route("login")}
-                        className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                    >
+                {/* Actions */}
+                <div className="uk-margin uk-flex uk-flex-between uk-flex-middle">
+                    <Link href={route("login")} className="uk-link">
                         Already registered?
                     </Link>
 
-                    <PrimaryButton className="ms-4" disabled={processing}>
+                    <button
+                        className="uk-button uk-button-primary"
+                        disabled={isSubmitting}
+                    >
                         Register
-                    </PrimaryButton>
+                    </button>
                 </div>
             </form>
-        </GuestLayout>
+        </div>
     );
 }

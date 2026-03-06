@@ -25,7 +25,7 @@ import {
 } from "@/components/ui/alert-dialog";
 
 export default function Index({ users }) {
-    console.log("check users :", users);
+    // console.log("check users :", users);
     return (
         <div className="p-6">
             <div className="flex justify-between items-center mb-6">

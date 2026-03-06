@@ -4,15 +4,9 @@ import { Head, usePage } from '@inertiajs/react';
 
 export default function Dashboard() {
      const user = usePage().props.auth.user;
-     console.log("check user :", user)
+    //  console.log("check user :", user)
     return (
-        <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Dashboard
-                </h2>
-            }
-        >
+        <AuthenticatedLayout>
             <Head title="Dashboard" />
 
             <div className="py-12">
