@@ -3,10 +3,10 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Loader2, ArrowLeft } from "lucide-react";
-import { Link, router } from "@inertiajs/react";
-import 'react-phone-number-input/style.css';
-import PhoneInput from 'react-phone-number-input';
-
+import { Head, Link, router, usePage } from "@inertiajs/react";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+// import 'react-phone-number-input/style.css';
+// import PhoneInput from 'react-phone-number-input';
 
 const schema = z.object({
     name: z
@@ -32,75 +32,113 @@ const Create = () => {
     const {
         register,
         handleSubmit,
+        reset,
         control,
         formState: { errors, isSubmitting },
     } = useForm({
         resolver: zodResolver(schema),
-        defaultValues:{
-          phone:"",
-        }
+        defaultValues: {
+            phone: "",
+        },
     });
+
+    const { errors: backendErrors, flash } = usePage().props;
+    // console.log("Check error :", backendErrors);
 
     const submit = (data) => {
         router.post("/employees", data);
     };
+
+    // const submit = (data) => {
+    //     router.post("/employees", data, {
+    //         preserveScroll: true,
+    //         onSuccess: () => {
+    //             reset();
+    //         },
+    //     });
+    // };
     return (
-        <div className="uk-container uk-margin-top">
-            <div className="uk-flex uk-flex-between uk-flex-middle uk-margin">
-                <h2 className="uk-text-large">Create Employee</h2>
+        <AuthenticatedLayout>
+            <Head title="Employee Create" />
+            <div className="uk-container uk-margin-top">
+                <div className="uk-card uk-card-default  uk-card-body uk-border-rounded">
+                    <div className="uk-flex uk-flex-between uk-flex-middle uk-margin">
+                        <h2 className="uk-text-large">Create Employee</h2>
 
-                   <Link
-                        href="/employees"
-                        className="uk-button uk-button-default flex items-center gap-2"
-                    >
-                        <ArrowLeft size={18} />
-                        Back
-                    </Link>
-            </div>
-            <div className="uk-width-1-2">
-                <form onSubmit={handleSubmit(submit)} className="uk-margin-top">
-                    {/* Name */}
-                    <div className="uk-margin-bottom">
-                        <label htmlFor="name">
-                            Name<span className="text-red-500">*</span>
-                        </label>
-                        <input
-                            type="text"
-                            className="uk-input"
-                            {...register("name")}
-                            placeholder="Enter Employee Name"
-                        />
-
-                        {errors.name && (
-                            <p className="text-red-500 uk-text-small">
-                                {errors.name.message}
-                            </p>
-                        )}
+                        <Link
+                            href="/employees"
+                            className="uk-button uk-button-default flex items-center gap-2"
+                        >
+                            <ArrowLeft size={18} />
+                            Back
+                        </Link>
                     </div>
-                    {/* Email */}
-                    <div>
-                        <label htmlFor="email">
-                            Email<span className="text-red-500">*</span>
-                        </label>
-                        <input
-                            type="text"
-                            className="uk-input"
-                            {...register("email")}
-                            placeholder="Enter your email"
-                        />
-                        {errors.email && (
-                            <p className="text-red-500 uk-text-small">
-                                {errors.email.message}
-                            </p>
-                        )}
-                    </div>
-                    {/* Phone */}
-                    <div className="uk-margin-top">
-                        <label htmlFor="phone">
-                            Phone<span className="text-red-500">*</span>
-                        </label>
 
-                          {/* <Controller
+                    {flash?.success && (
+                        <div className="uk-alert-success" uk-alert>
+                            <a className="uk-alert-close" uk-close></a>
+                            <p>{flash.success}</p>
+                        </div>
+                    )}
+                    {/* {backendErrors.email && (
+                    <div className="uk-alert-danger" uk-alert>
+                        {backendErrors.email}
+                    </div>
+                )} */}
+                    <div className="uk-width-1-2">
+                        <form
+                            onSubmit={handleSubmit(submit)}
+                            className="uk-margin-top"
+                        >
+                            {/* Name */}
+                            <div className="uk-margin-bottom">
+                                <label htmlFor="name">
+                                    Name<span className="text-red-500">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    className="uk-input"
+                                    {...register("name")}
+                                    placeholder="Enter Employee Name"
+                                />
+
+                                {errors.name && (
+                                    <p className="text-red-500 uk-text-small">
+                                        {errors.name.message}
+                                    </p>
+                                )}
+                            </div>
+                            {/* Email */}
+                            <div>
+                                <label htmlFor="email">
+                                    Email<span className="text-red-500">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    className="uk-input"
+                                    {...register("email")}
+                                    placeholder="Enter your email"
+                                />
+                                {(errors.email?.message ||
+                                    backendErrors.email) && (
+                                    <p className="text-red-500 uk-text-small">
+                                        {errors.email?.message ||
+                                            backendErrors.email}
+                                    </p>
+                                )}
+                                {/* {errors.email && (
+                                <p className="text-red-500 uk-text-small">
+                                    {errors.email.message }
+                                </p>
+                            )} */}
+                            </div>
+                            {/* Phone */}
+                            <div className="uk-margin-top">
+                                <label htmlFor="phone">
+                                    Phone<span className="text-red-500">*</span>
+                                </label>
+
+                                {/* <Controller
                             name="phone"
                             control={control}
                             render={({ field }) => (
@@ -112,36 +150,38 @@ const Create = () => {
                                 />
                             )}
                         /> */}
-                        <input
-                            type="text"
-                            className="uk-input"
-                            {...register("phone")}
-                            placeholder="Enter your phone"
-                        />
+                                <input
+                                    type="text"
+                                    className="uk-input"
+                                    {...register("phone")}
+                                    placeholder="Enter your phone"
+                                />
 
-                        {errors.phone && (
-                            <p className="text-red-500 uk-text-small">
-                                {errors.phone.message}
-                            </p>
-                        )}
-                    </div>
+                                {errors.phone && (
+                                    <p className="text-red-500 uk-text-small">
+                                        {errors.phone.message}
+                                    </p>
+                                )}
+                            </div>
 
-                    {/* Button */}
-                    <div className="uk-margin-top">
-                        <button
-                            type="submit"
-                            disabled={isSubmitting}
-                            className="uk-button uk-button-primary"
-                        >
-                            {isSubmitting && (
-                                <Loader2 className="h-4 w-4 animate-spin" />
-                            )}
-                            {isSubmitting ? "Saving..." : "Save"}
-                        </button>
+                            {/* Button */}
+                            <div className="uk-margin-top">
+                                <button
+                                    type="submit"
+                                    disabled={isSubmitting}
+                                    className="uk-button uk-button-primary"
+                                >
+                                    {isSubmitting && (
+                                        <Loader2 className="h-4 w-4 animate-spin" />
+                                    )}
+                                    {isSubmitting ? "Saving..." : "Save"}
+                                </button>
+                            </div>
+                        </form>
                     </div>
-                </form>
+                </div>
             </div>
-        </div>
+        </AuthenticatedLayout>
     );
 };
 

@@ -13,10 +13,13 @@ class EmployeeController extends Controller
 
     public function index()
     {
-        $employees = Employee::latest()->get();
+        $bladeContent = [
+            'title' => 'Employees',
+            'employees' => Employee::latest()->get(),
+        ];
 
         return Inertia::render('Employees/Index', [
-            'employees' => $employees
+            'bladeContent' => $bladeContent
         ]);
     }
 
@@ -34,9 +37,10 @@ class EmployeeController extends Controller
             'phone' => 'nullable|string|max:10',
         ]);
 
-        Employee::create($request->only('name', 'email', 'phone'));
+        $employee = Employee::create($request->only('name', 'email', 'phone'));
 
-        return redirect()->route('employees.index')
+        return redirect()
+            ->route('employees.create', $employee->id)
             ->with('success', 'Employee created successfully');
     }
 

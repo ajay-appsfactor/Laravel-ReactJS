@@ -1,4 +1,4 @@
-import { Head, Link, router } from "@inertiajs/react";
+import { Head, Link, router, usePage } from "@inertiajs/react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -21,7 +21,10 @@ const registerSchema = z
             .trim()
             .min(1, "Phone is required")
             .regex(/^[0-9]{10}$/, "Phone must be 10 digits"),
-        password: z.string().min(1, "Password is required").min(6, "Password must be at least 6 characters"),
+        password: z
+            .string()
+            .min(1, "Password is required")
+            .min(6, "Password must be at least 6 characters"),
         password_confirmation: z.string(),
     })
     .refine((data) => data.password === data.password_confirmation, {
@@ -38,8 +41,9 @@ export default function Register() {
         resolver: zodResolver(registerSchema),
     });
 
+    const { errors: backendErrors } = usePage().props;
     const submit = (data) => {
-        console.log(data);
+        // console.log(data);
 
         router.post(route("register"), data);
     };
@@ -82,9 +86,9 @@ export default function Register() {
                         />
                     </div>
 
-                    {errors.email && (
-                        <p className="uk-text-danger uk-text-small">
-                            {errors.email.message}
+                    {(errors.email?.message || backendErrors.email) && (
+                        <p className="text-red-500 uk-text-small">
+                            {errors.email?.message || backendErrors.email}
                         </p>
                     )}
                 </div>

@@ -32,9 +32,9 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Dashboard
                                 </NavLink>
-                                <NavLink href={route("users.index")}>
+                                {/* <NavLink href={route("users.index")}>
                                     Users
-                                </NavLink>
+                                </NavLink> */}
                                  <NavLink href={route("employees.index")}>
                                     Employees
                                 </NavLink>

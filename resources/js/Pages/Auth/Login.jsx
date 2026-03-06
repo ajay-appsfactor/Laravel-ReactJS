@@ -1,4 +1,4 @@
-import { Head, Link, router } from "@inertiajs/react";
+import { Head, Link, router, usePage } from "@inertiajs/react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -28,8 +28,11 @@ export default function Login({ status, canResetPassword }) {
         },
     });
 
+        const { errors: backendErrors } = usePage().props;
+        console.log("backend error :", backendErrors)
+
     const submit = (data) => {
-        console.log(data);
+        // console.log(data);
 
         router.post(route("login"), data, {
             onFinish: () => {
