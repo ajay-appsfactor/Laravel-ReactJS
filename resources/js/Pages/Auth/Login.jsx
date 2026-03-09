@@ -10,7 +10,10 @@ const loginSchema = z.object({
         .min(1, "Email is required")
         .toLowerCase()
         .pipe(z.email({ error: "Invalid email address" })),
-    password: z.string().min(1, "Password is required").min(6, "Password must be at least 6 characters"),
+    password: z
+        .string()
+        .min(1, "Password is required")
+        .min(6, "Password must be at least 6 characters"),
     remember: z.boolean().optional(),
 });
 
@@ -28,8 +31,8 @@ export default function Login({ status, canResetPassword }) {
         },
     });
 
-        const { errors: backendErrors } = usePage().props;
-        console.log("backend error :", backendErrors)
+    const { errors: backendErrors, flash } = usePage().props;
+    console.log("backend error :", backendErrors);
 
     const submit = (data) => {
         // console.log(data);
@@ -46,6 +49,18 @@ export default function Login({ status, canResetPassword }) {
             <Head title="Login" />
 
             <h2 className="uk-text-large">Login</h2>
+
+            {(backendErrors.email) && (
+                <p className="text-red-500 uk-text-small mt -4 mb-4">
+                    {backendErrors.email}
+                </p>
+            )}
+
+            {/* {flash?.success && (
+                <div className="uk-alert uk-alert-success">
+                    <p>{flash.success}</p>
+                </div>
+            )} */}
 
             {status && (
                 <div

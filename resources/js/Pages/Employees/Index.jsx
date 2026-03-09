@@ -1,15 +1,20 @@
 import React, { useState } from "react";
-import { Head, Link, router } from "@inertiajs/react";
+import { Head, Link, router  } from "@inertiajs/react";
 import { format } from "date-fns";
 import { Pencil, Trash2, ArrowLeft } from "lucide-react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 
 const Index = ({ bladeContent }) => {
     const { title, employees } = bladeContent;
+    console.log("employee data :", employees)
     const deleteEmployee = async (id) => {
         try {
+            // await UIkit.modal.confirm(
+            //     `Are you sure you want to delete employee ${id}?`,
+            // );
+
             await UIkit.modal.confirm(
-                `Are you sure you want to delete employee ${id}?`,
+                `Are you sure you want to delete employee ?`,
             );
             router.delete(`/employees/${id}`);
         } catch (error) {
@@ -58,6 +63,7 @@ const Index = ({ bladeContent }) => {
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Phone</th>
+                                 <th>Aadhaar Number</th>
                                 <th>Created At</th>
                                 <th>Updated At</th>
                                 <th>Actions</th>
@@ -71,6 +77,7 @@ const Index = ({ bladeContent }) => {
                                         <td>{employee.name}</td>
                                         <td>{employee.email}</td>
                                         <td>{employee.phone}</td>
+                                        <td>{employee.aadhaar}</td>
                                         <td>
                                             {format(
                                                 new Date(employee.created_at),
@@ -85,13 +92,13 @@ const Index = ({ bladeContent }) => {
                                         </td>
                                         <td className="uk-flex gap-3">
                                             <Link
-                                                href={`/employees/${employee.id}/edit`}
+                                                href={`/employees/${employee.encrypted_id}/edit`}
                                             >
                                                 <Pencil size={18} />
                                             </Link>
                                             <button
                                                 onClick={() => {
-                                                    deleteEmployee(employee.id);
+                                                    deleteEmployee(employee.encrypted_id);
                                                 }}
                                                 className="text-red-500 hover:text-red-700"
                                             >
@@ -102,7 +109,7 @@ const Index = ({ bladeContent }) => {
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="6" className="text-center">
+                                    <td colSpan="7" className="text-center">
                                         No Employees Found
                                     </td>
                                 </tr>

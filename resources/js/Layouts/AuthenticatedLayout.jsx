@@ -35,9 +35,23 @@ export default function AuthenticatedLayout({ header, children }) {
                                 {/* <NavLink href={route("users.index")}>
                                     Users
                                 </NavLink> */}
-                                 <NavLink href={route("employees.index")}>
+                                <NavLink href={route("employees.index")}>
                                     Employees
                                 </NavLink>
+                                {/* Pdf */}
+                                {/* <NavLink href={route("pdf")} target="_blank">
+                                    PDF
+                                </NavLink> */}
+                                {/* PDF */}
+                                <div className="flex gap-2">
+                                    <a
+                                        href={route("pdf")}
+                                        target="_blank"
+                                        className="inline-flex items-center px-3 py-2 text-sm font-medium text-gray-700 bg-white  rounded-md"
+                                    >
+                                        PDF
+                                    </a>
+                                </div>
                             </div>
                         </div>
 

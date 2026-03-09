@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\PdfController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -41,6 +42,10 @@ Route::get('users/create', [UserController::class, 'create'])->name('users.creat
 // Employee Controller
 // Route::get('employees', [EmployeeController::class, 'index'])->name('employees.index');
 Route::resource('employees', EmployeeController::class);
+
+
+// PDF Controller
+Route::get('pdf', [PdfController::class, 'index'])->name('pdf');
 
 // Route::resource('users', UserController::class);
 

@@ -30,10 +30,11 @@ const Edit = ({ employee }) => {
         },
     });
 
-    const { errors: backendErrors } = usePage().props;
+    const { errors: backendErrors, flash, encryptedId  } = usePage().props;
+    // console.log("flash :", flash)
     // console.log("Edit backend error :", backendErrors);
     const onSubmit = (data) => {
-        router.put(`/employees/${employee.id}`, data);
+        router.put(`/employees/${encryptedId}`, data);
     };
 
     return (
@@ -52,6 +53,11 @@ const Edit = ({ employee }) => {
                             Back
                         </Link>
                     </div>
+                     {flash?.success && (
+                        <div className="uk-alert uk-alert-success">
+                            <p>{flash.success}</p>
+                        </div>
+                    )}
 
                     <div className="uk-width-1-2">
                         <form

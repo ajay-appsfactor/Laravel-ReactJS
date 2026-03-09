@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('phone',20);
+            $table->text('phone')->nullable();
+            $table->text('aadhaar')->nullable();
+            $table->string('aadhaar_hash')->nullable()->index();
             $table->timestamps();
         });
     }

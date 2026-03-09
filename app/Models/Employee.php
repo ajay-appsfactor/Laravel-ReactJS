@@ -9,5 +9,9 @@ class Employee extends Model
     protected $table       = "employees";
     protected $primaryKey  = 'id';
     protected $guarded     = ['id'];
- 
+
+    protected $casts =  [
+        'phone' => 'encrypted',
+        'aadhaar' => 'encrypted'
+    ];
 }

@@ -26,9 +26,15 @@ const schema = z.object({
         .trim()
         .min(1, "Phone is required")
         .regex(/^[0-9]{10}$/, "Phone must be 10 digits"),
+
+    aadhaar: z
+        .string()
+        .min(1, "Aadhaar is required")
+        .length(12, "Aadhaar must be 12 digits")
+        .regex(/^[0-9]+$/, "Only numbers allowed"),
 });
 
-const Create = () => {
+const Create = ({ userTypes }) => {
     const {
         register,
         handleSubmit,
@@ -41,6 +47,7 @@ const Create = () => {
             phone: "",
         },
     });
+    console.log("user type :", userTypes);
 
     const { errors: backendErrors, flash } = usePage().props;
     // console.log("Check error :", backendErrors);
@@ -160,6 +167,26 @@ const Create = () => {
                                 {errors.phone && (
                                     <p className="text-red-500 uk-text-small">
                                         {errors.phone.message}
+                                    </p>
+                                )}
+                            </div>
+
+                            {/* Aadhaar Number */}
+                            <div className="uk-margin-bottom mt-4">
+                                <label htmlFor="aadhaar">
+                                    Aadhaar Number
+                                    <span className="text-red-500">*</span>
+                                </label>
+                                <input
+                                    type="text"
+                                    className="uk-input"
+                                    {...register("aadhaar")}
+                                    placeholder="Enter Aadhaar Number"
+                                />
+
+                                {errors.aadhaar && (
+                                    <p className="text-red-500 uk-text-small">
+                                        {errors.aadhaar.message}
                                     </p>
                                 )}
                             </div>
