@@ -11,6 +11,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Illuminate\Support\Str;
 use Config;
 
 class EmployeeController extends Controller
@@ -148,7 +149,10 @@ class EmployeeController extends Controller
         //    Load pdf
         $pdf = Pdf::loadView('pdf', compact('employee'));
 
+        // File Name 
+        $filename = 'employee_' . Str::uuid() . '.pdf';
+
         //  stream PDF
-        return $pdf->stream("employee_{$employee->id}.pdf");
+        return $pdf->stream($filename);
     }
 }
