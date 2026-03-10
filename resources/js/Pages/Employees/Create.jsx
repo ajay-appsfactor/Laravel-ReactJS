@@ -32,9 +32,11 @@ const schema = z.object({
         .min(1, "Aadhaar is required")
         .length(12, "Aadhaar must be 12 digits")
         .regex(/^[0-9]+$/, "Only numbers allowed"),
+
+    gender: z.string().min(1, "Gender is required"),
 });
 
-const Create = ({ userTypes }) => {
+const Create = ({ genders }) => {
     const {
         register,
         handleSubmit,
@@ -47,7 +49,7 @@ const Create = ({ userTypes }) => {
             phone: "",
         },
     });
-    console.log("user type :", userTypes);
+    console.log("gender:", genders);
 
     const { errors: backendErrors, flash } = usePage().props;
     // console.log("Check error :", backendErrors);
@@ -187,6 +189,34 @@ const Create = ({ userTypes }) => {
                                 {errors.aadhaar && (
                                     <p className="text-red-500 uk-text-small">
                                         {errors.aadhaar.message}
+                                    </p>
+                                )}
+                            </div>
+                            {/* Gender */}
+                            <div className="uk-margin-bottom">
+                                <label htmlFor="gender">
+                                    Gender
+                                    <span className="text-red-500">*</span>
+                                </label>
+
+                                <select
+                                    className="uk-select"
+                                    {...register("gender")}
+                                >
+                                    <option value="">Select Gender</option>
+
+                                    {Object.entries(genders).map(
+                                        ([key, value]) => (
+                                            <option key={key} value={key}>
+                                                {value}
+                                            </option>
+                                        ),
+                                    )}
+                                </select>
+
+                                {errors.gender && (
+                                    <p className="text-red-500 uk-text-small">
+                                        {errors.gender.message}
                                     </p>
                                 )}
                             </div>

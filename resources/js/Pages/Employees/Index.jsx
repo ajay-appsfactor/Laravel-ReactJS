@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { Head, Link, router  } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
 import { format } from "date-fns";
-import { Pencil, Trash2, ArrowLeft } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { FileText } from "lucide-react";
 
 const Index = ({ bladeContent }) => {
     const { title, employees } = bladeContent;
-    console.log("employee data :", employees)
+    console.log("employee data :", employees);
     const deleteEmployee = async (id) => {
         try {
             // await UIkit.modal.confirm(
@@ -62,10 +63,12 @@ const Index = ({ bladeContent }) => {
                             <tr>
                                 <th>Name</th>
                                 <th>Email</th>
+                                <th>Gender</th>
                                 <th>Phone</th>
-                                 <th>Aadhaar Number</th>
+                                <th>Aadhaar Number</th>
                                 <th>Created At</th>
                                 <th>Updated At</th>
+                                <th>View PDF</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -76,6 +79,7 @@ const Index = ({ bladeContent }) => {
                                     <tr key={employee.id}>
                                         <td>{employee.name}</td>
                                         <td>{employee.email}</td>
+                                        <td>{employee.gender}</td>
                                         <td>{employee.phone}</td>
                                         <td>{employee.aadhaar}</td>
                                         <td>
@@ -90,6 +94,17 @@ const Index = ({ bladeContent }) => {
                                                 "dd MMM yyyy, hh:mm a",
                                             )}
                                         </td>
+                                        <td>
+                                            <a
+                                                href={`/employees/${employee.encrypted_id}/pdf`}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                title="View PDF"
+                                                className="text-red-800"
+                                            >
+                                                <FileText />
+                                            </a>
+                                        </td>
                                         <td className="uk-flex gap-3">
                                             <Link
                                                 href={`/employees/${employee.encrypted_id}/edit`}
@@ -98,7 +113,9 @@ const Index = ({ bladeContent }) => {
                                             </Link>
                                             <button
                                                 onClick={() => {
-                                                    deleteEmployee(employee.encrypted_id);
+                                                    deleteEmployee(
+                                                        employee.encrypted_id,
+                                                    );
                                                 }}
                                                 className="text-red-500 hover:text-red-700"
                                             >
@@ -109,7 +126,7 @@ const Index = ({ bladeContent }) => {
                                 ))
                             ) : (
                                 <tr>
-                                    <td colSpan="7" className="text-center">
+                                    <td colSpan="9" className="text-center">
                                         No Employees Found
                                     </td>
                                 </tr>

@@ -1,55 +1,22 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <title>{{ $title }}</title>
+    <title>Employee PDF</title>
     <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th,
-        td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
+        body { font-family: sans-serif; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #000; padding: 8px; }
     </style>
 </head>
-
 <body>
-    <h1>{{ $title }}</h1>
-    <p>Date: {{ $date }}</p>
-
+    <h2>{{ $employee->name }}, Employee Details</h2>
     <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Aadhaar Number</th>
-
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($employees as $employee)
-            <tr>
-                <td>{{ $employee->id }}</td>
-                <td>{{ $employee->name }}</td>
-                <td>{{ $employee->email }}</td>
-                <td>{{ $employee->phone }}</td>
-                <td>{{ $employee->aadhaar }}</td>
-
-            </tr>
-            @endforeach
-        </tbody>
+        <tr><th>Name</th><td>{{ $employee->name }}</td></tr>
+        <tr><th>Email</th><td>{{ $employee->email }}</td></tr>
+        <tr><th>Phone</th><td>{{ $employee->phone }}</td></tr>
+        <tr><th>Aadhaar</th><td>{{ $employee->aadhaar }}</td></tr>
+        <tr><th>Created At</th><td>{{ $employee->created_at->format('d M Y, h:i A') }}</td></tr>
+        <tr><th>Updated At</th><td>{{ $employee->updated_at->format('d M Y, h:i A') }}</td></tr>
     </table>
 </body>
-
 </html>

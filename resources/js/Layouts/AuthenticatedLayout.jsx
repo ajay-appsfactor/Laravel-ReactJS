@@ -43,7 +43,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                     PDF
                                 </NavLink> */}
                                 {/* PDF */}
-                                <div className="flex gap-2">
+                                {/* <div className="flex gap-2">
                                     <a
                                         href={route("pdf")}
                                         target="_blank"
@@ -51,7 +51,7 @@ export default function AuthenticatedLayout({ header, children }) {
                                     >
                                         PDF
                                     </a>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
 

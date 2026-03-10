@@ -10,9 +10,15 @@ const schema = z.object({
     name: z.string().min(3, "Name must be at least 3 characters"),
     email: z.string().email("Invalid email address"),
     phone: z.string().regex(/^[0-9]{10}$/, "Phone must be 10 digits"),
+    aadhaar: z
+        .string()
+        .min(1, "Aadhaar is required")
+        .length(12, "Aadhaar must be 12 digits")
+        .regex(/^[0-9]+$/, "Only numbers allowed"),
+    gender: z.string().min(1, "Gender is required"),
 });
 
-const Edit = ({ employee }) => {
+const Edit = ({ employee, genders }) => {
     if (!employee) {
         return <div>Loading...</div>;
     }
@@ -26,11 +32,13 @@ const Edit = ({ employee }) => {
         defaultValues: {
             name: employee?.name || "",
             email: employee?.email || "",
+            aadhaar: employee?.aadhaar || "",
             phone: employee?.phone || "",
+            gender: employee?.gender || "",
         },
     });
 
-    const { errors: backendErrors, flash, encryptedId  } = usePage().props;
+    const { errors: backendErrors, flash, encryptedId } = usePage().props;
     // console.log("flash :", flash)
     // console.log("Edit backend error :", backendErrors);
     const onSubmit = (data) => {
@@ -53,7 +61,7 @@ const Edit = ({ employee }) => {
                             Back
                         </Link>
                     </div>
-                     {flash?.success && (
+                    {flash?.success && (
                         <div className="uk-alert uk-alert-success">
                             <p>{flash.success}</p>
                         </div>
@@ -118,6 +126,54 @@ const Edit = ({ employee }) => {
                                 {errors.phone && (
                                     <p className="uk-text-danger">
                                         {errors.phone.message}
+                                    </p>
+                                )}
+                            </div>
+                            {/* Aadhaar */}
+                            <div className="uk-margin">
+                                <label className="uk-form-label">
+                                    Aadhaar
+                                    <span className="text-red-500">*</span>
+                                </label>
+
+                                <input
+                                    {...register("aadhaar")}
+                                    className="uk-input"
+                                    type="text"
+                                />
+
+                                {errors.aadhaar && (
+                                    <p className="uk-text-danger">
+                                        {errors.aadhaar.message}
+                                    </p>
+                                )}
+                            </div>
+
+                            {/* Gender */}
+                            <div className="uk-margin">
+                                <label className="uk-form-label">
+                                    Gender
+                                    <span className="text-red-500">*</span>
+                                </label>
+
+                                <select
+                                    {...register("gender")}
+                                    className="uk-select"
+                                >
+                                    <option value="">Select Gender</option>
+
+                                    {Object.entries(genders || {}).map(
+                                        ([key, value]) => (
+                                            <option key={key} value={key}>
+                                                {value}
+                                            </option>
+                                        ),
+                                    )}
+                                </select>
+
+                                {errors.gender && (
+                                    <p className="uk-text-danger">
+                                        {errors.gender.message}
                                     </p>
                                 )}
                             </div>

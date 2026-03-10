@@ -40,3 +40,53 @@ composer dump-autoload
 
 # Pdf Upload Command
 composer require barryvdh/laravel-dompdf
+
+# php artisan migrate:rollback
+
+Schema::table('users', function (Blueprint $table) {
+    $table->uuid('uuid')->after('id');
+});
+
+php artisan model:show User
+
+
+After create a helpers.php file 
+
+composer.json file :
+"autoload": {
+    "files": [
+        "app/helpers.php"
+    ]
+}
+composer dump-autoload
+
+
+php artisan make:enum EmployeeHelper
+
+$employees = Employee::oldest()->get();
+
+
+
+
+Migration file Update or Add New Coulmn Inside Table 
+1. php artisan make:migration add_gender_to_employees_table
+2.
+<pre>
+
+public function up(): void
+{
+    Schema::table('employees', function (Blueprint $table) {
+        $table->string('gender')->nullable()->after('aadhaar_hash');
+    });
+}
+
+public function down(): void
+{
+    Schema::table('employees', function (Blueprint $table) {
+        $table->dropColumn('gender');
+    });
+}
+</pre>
+ 
+
+ 3.php artisan migrate

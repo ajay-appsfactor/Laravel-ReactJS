@@ -42,10 +42,12 @@ Route::get('users/create', [UserController::class, 'create'])->name('users.creat
 // Employee Controller
 // Route::get('employees', [EmployeeController::class, 'index'])->name('employees.index');
 Route::resource('employees', EmployeeController::class);
+Route::get('/employees/{encryptedId}/pdf', [EmployeeController::class, 'pdf'])
+     ->name('employees.pdf');
 
 
 // PDF Controller
-Route::get('pdf', [PdfController::class, 'index'])->name('pdf');
+// Route::get('pdf', [PdfController::class, 'index'])->name('pdf');
 
 // Route::resource('users', UserController::class);
 
